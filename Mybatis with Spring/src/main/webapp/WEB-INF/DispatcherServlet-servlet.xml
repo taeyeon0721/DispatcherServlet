@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	<!-- 스프링 컨테이너가 어노테이션 적용범위 알려줌 -->
+     <context:component-scan base-package="com.kim.biz" />
+     
+     
+   
+   <!-- 다국어 처리 -->
+   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+      <property name="basenames">
+         <list>
+            <value>message.messageSource</value>
+         </list>
+      </property>
+   </bean>
+   <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+   <mvc:interceptors>
+      <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+         <property name="paramName" value="lang" />
+      </bean>
+   </mvc:interceptors>
+     
+ 
+     
+   <!-- 예외 페이지 설정  
+	<mvc:annotation-driven/>
+	 --> 
+	 
+	 <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+	 	<property name="exceptionMappings">
+	 		<props>
+	 			<prop key="java.lang.NullPointerException">error/error.jsp</prop>
+	 			<prop key="java.lang.ArithmethicException">error/error.jsp</prop>
+	 			<prop key="java.lang.Exception">error/error.jsp</prop>
+	 		</props>
+	 	</property>
+	 </bean>
+	 
+	    
+  <!-- 파일 업로드 관련 설정 -->
+   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+      <property name="maxUploadSize" value="-1" />
+   </bean>
+
+<!--  
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/login.do">login</prop> 
+				<prop key="/main.do">main</prop>
+				<prop key="/board.do">board</prop>
+				<prop key="/logout.do">logout</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<bean id="login" class="com.kim.biz.controller.LoginController" />
+	<bean id="logout" class="com.kim.biz.controller.LogoutController" />
+	<bean id="main" class="com.kim.biz.controller.MainController" />
+	<bean id="board" class="com.kim.biz.controller.BoardController" />
+	
+   <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	  <property name="prefix" value="/WEB-INF/view/" />
+      <property name="suffix" value=".jsp" />
+	</bean>
+	
+-->	
+	
+</beans>
+
+<!-- jsp페이지에서 .do요청을 하면 해당 요청에 맞는 값(key값)찾음
+	value는 객체: new XXXController인데 
+	객체를 메모리에 등록해주고 그 id를 써줘야함
+ -->
+ 
+ <!-- 맨 상단은 컬렉션들이기 때문에 키값에 맞는 벨류값 나오도록 한 것이고
+ 	  아래는 String값이니까 value로 써줌  -->
