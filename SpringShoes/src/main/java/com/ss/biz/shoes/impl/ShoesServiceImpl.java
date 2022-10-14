@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ss.biz.shoes.ShoesColorVO;
 import com.ss.biz.shoes.ShoesSampleVO;
 import com.ss.biz.shoes.ShoesService;
+import com.ss.biz.shoes.ShoesSizeVO;
 import com.ss.biz.shoes.ShoesVO;
 
 @Service("shoesService")
@@ -17,8 +18,8 @@ public class ShoesServiceImpl implements ShoesService{
 	private ShoesDAO shoesDAO;
 
 	@Override
-	public void updateShoes(ShoesVO vo, int size) {
-		shoesDAO.updateShoes(vo, size);
+	public void updateShoes(ShoesSizeVO vo) {
+		shoesDAO.updateShoes(vo);
 	}
 
 	@Override
@@ -42,9 +43,24 @@ public class ShoesServiceImpl implements ShoesService{
 	}
 
 	@Override
-	public List<ShoesVO> selectShoes_Size(ShoesVO vo) {
+	public List<ShoesSizeVO> selectShoes_Size(ShoesVO vo) {
 		return shoesDAO.selectShoes_Size(vo);
-	} 
+	}
+
+	@Override
+	public ShoesVO selectOneShoesBucket(ShoesSizeVO vo) {
+		return shoesDAO.selectOneShoesBucket(vo);
+	}
+
+	@Override
+	public int selectAllShoesPageSize(ShoesVO vo) {
+		// TODO Auto-generated method stub
+		return shoesDAO.selectAllShoesPageSize(vo);
+	}
+	
+	
+
+	
 	
 
 

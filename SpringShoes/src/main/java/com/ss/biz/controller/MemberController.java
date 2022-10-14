@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ss.biz.member.MemberService;
 import com.ss.biz.member.MemberVO;
@@ -43,12 +44,14 @@ public class MemberController {
 		
 		System.out.println("로그인 로그 mVO ["+mVO+"]");
 		
-		mVO = memberService.selectOneMember(mVO);	
+		mVO = memberService.login(mVO);
+		
 		
 		if(mVO==null) {		// 로그인 실패시
 			return "login.jsp"; // 다시 로그인 화면으로 이동
 		}
-		else {
+		else { // 로그인 성공시
+			
 			// 세션에 mid만 저장
 			session.setAttribute("mid", mVO.getMid());
 			return "redirect:selectAllS.do";	// 메인페이지 이동
@@ -123,6 +126,21 @@ public class MemberController {
 		
 		
 		return "myPage.jsp"; // 메인페이지 > 마이페이지 이동이므로 redirect
+	}
+	
+
+	@ResponseBody
+	@RequestMapping("/idCheck.do")
+	public String idCheck(MemberVO mVO, @RequestParam(value="check")String mid) {
+		System.out.println("ajax 컨트롤러 들오옴");
+		mVO.setMid(mid);
+		MemberVO check = memberService.selectOneMember(mVO);
+		System.out.println("로그 : "+ mid);
+		String result = "0";	             //중복o
+		if(check==null) {
+			result= "1";	//중복x
+		}		
+		return result;		
 	}
 		
 	
